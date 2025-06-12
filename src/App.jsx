@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div>
       <h1>Home Page!! changes from ubuntu </h1>
-      <h2>From feature branch !!! and testing jenkins webhook from ch</h2>
+      <h2>From feature branch !!! and testing jenkins webhook from chapter</h2>
     </div>
   );
 };
