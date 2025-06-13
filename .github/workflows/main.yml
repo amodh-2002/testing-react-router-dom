@@ -19,7 +19,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Run npm install
-        run: npm install
+        run: |
+          if [ -f package.json ]; then npm install; fi
 
       - name: Echo printing
         run: echo "Install successful"
