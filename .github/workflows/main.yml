@@ -1,4 +1,4 @@
-name: Run install
+name: Run installs
 on:
   push:
     branches:
