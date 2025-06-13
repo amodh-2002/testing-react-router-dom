@@ -1,12 +1,26 @@
-name: My first workflow
-on: push
+name: Run install
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  install_echo:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - name: Checkout code repo
+        uses: actions/checkout@v4.2.2
+
+      - name: Install node environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: "18"
+          cache: "npm"
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Run npm install
+        run: npm install
+
+      - name: Echo printing
+        run: echo "Install successful"
         
-      - name: Print Hello
-        run: echo "Hello, GitHub Actions!" 
