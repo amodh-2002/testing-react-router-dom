@@ -20,5 +20,5 @@ jobs:
 
       - name: Installing packages
         run: |
-          if [ -f package.json ]; npm install; fi
+          if [ -f package.json ]; then npm install; fi
         
