@@ -1,0 +1,27 @@
+name: Understanding environment section under settings
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4.2.2
+
+      - name: Running tests
+        run: echo "Running test"
+
+  deploy:
+    runs-on: ubuntu-test
+    needs: testing
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Pushing to production
+        run: echo "Deploying to production..."
