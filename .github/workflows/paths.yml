@@ -1,0 +1,19 @@
+name: Run the workflow on specific file
+on:
+  pull_request:
+    paths:
+      - "src/**/*.jsx"
+      - "Readme.md"
+
+jobs:
+  testing-paths:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4.2.2
+
+      - name: Checking the working
+        run: |
+          echo "✅ These files changed in this PR:"
+          git fetch origin main
+          git diff --name-only origin/main...HEAD
