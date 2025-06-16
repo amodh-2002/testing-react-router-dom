@@ -17,7 +17,7 @@ jobs:
       - name: Labeler
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.REPO_TOKEN }}
           script: |
             const pr = context.payload.pull_request;
             const changedFiles = await github.rest.pulls.listFiles({
