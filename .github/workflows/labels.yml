@@ -1,0 +1,48 @@
+name: Auto Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened] # Trigger on these PR events
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # Required permission to add labels
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Labeler
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const changedFiles = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+
+            const labelsToAdd = new Set();
+
+            changedFiles.data.forEach(file => {
+              if (file.filename.startsWith('src/')) {
+                labelsToAdd.add('area:frontend');
+              } else if (file.filename.startsWith('api/')) {
+                labelsToAdd.add('area:backend');
+              } else if (file.filename.endsWith('.md')) {
+                labelsToAdd.add('type:documentation');
+              }
+            });
+
+            if (labelsToAdd.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: Array.from(labelsToAdd),
+              });
+            }
