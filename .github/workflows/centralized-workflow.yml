@@ -4,7 +4,7 @@ on:
 
 jobs:
   use-resuable:
-    uses: https://github.com/amodh-2002/centralized-workflow/blob/main/.github/workflows/ci-build.yml@main
+    uses: amodh-2002/centralized-workflow/.github/workflows/ci-build.yml@main
     with:
       node_version: "20"
     secrets:
