@@ -13,7 +13,7 @@ const Home = () => {
 const About = () => {
   return (
     <div>
-      <h1>About Page!! and working paths </h1>
+      <h1>About Page!! and working paths and labels </h1>
     </div>
   );
 };
