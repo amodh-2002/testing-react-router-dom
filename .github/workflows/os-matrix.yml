@@ -1,0 +1,27 @@
+name: Os matrix combination
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [16, 18, 20]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup the node verison
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Installing dependencies
+        run: npm ci
+
+      - name: Running tests
+        run: echo "Running test"
+        
+      
