@@ -1,0 +1,11 @@
+name: Use Reusable Workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  use-resuable:
+    uses: https://github.com/amodh-2002/centralized-workflow/blob/main/.github/workflows/ci-build.yml@main
+    with:
+      node_version: "20"
+    secrets:
+      CUSTOM_SECRET: ${{ secrets.REPO_SECRET }}
