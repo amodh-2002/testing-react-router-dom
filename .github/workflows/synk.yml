@@ -1,4 +1,7 @@
-name: Understanding synk integration for continous security
+name: Understanding Snyk Integration for Continuous Security
+
+on:
+  workflow_dispatch:
 
 # on:
 #   push:
@@ -6,40 +9,39 @@ name: Understanding synk integration for continous security
 #       - main
 #   pull_request:
 
-on:
-  workflow_dispatch:
-
 jobs:
-  understanding_synk:
+  understanding_snyk:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.1.1
 
-      - name: Set up skyn
-        uses: snyk/actions/setup@master
-        id: snyk
+      - name: Set up Snyk CLI
+        uses: snyk/actions/setup@v2
         with:
-          snyk-version: v1.391.0
-          snyk-token: ${{ secrets.SNYK_TOKEN }}
-          
-      - name: Setup node
-        uses: actions/setup-node@v3.9.1
-        with:
-          node_version: 20
+          snyk-version: 1.391.0  # ✅ Remove the "v" prefix!
 
-      - name: Install dep
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
         run: npm install
 
-      - name: Run Snyk test (fails on vulnerabilities)
+      - name: Run Snyk test
         run: snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Monitor project with snyk
+      - name: Monitor project with Snyk
         run: snyk monitor --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-
-          
