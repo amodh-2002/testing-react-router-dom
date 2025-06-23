@@ -1,32 +1,23 @@
-name: Understanding Snyk Integration for Continuous Security
+name: Snyk Continuous Security Scan
 
 on:
   workflow_dispatch:
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
+  # Optional: Enable for pushes & PRs
+  # push:
+  #   branches: [main]
+  # pull_request:
 
 jobs:
-  understanding_snyk:
+  snyk_security:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: read
 
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4.1.1
-
-      - name: Set up Snyk CLI
-        uses: snyk/actions/setup@v2
-        with:
-          snyk-version: 1.391.0  # ✅ Remove the "v" prefix!
-
-      - name: Authenticate Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -36,12 +27,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Snyk test
+      - name: Set up Snyk CLI
+        uses: snyk/actions/setup@v2
+        with:
+          snyk-version: '1.391.0'  # ✅ No 'v' prefix
+
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk test (fail build on vulns)
         run: snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Monitor project with Snyk
+      - name: Monitor with Snyk
         run: snyk monitor --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
