@@ -1,0 +1,43 @@
+name: Understanding synk integration for continous security
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+
+on:
+  workflow_dispatch:
+
+jobs:
+  understanding_synk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up skyn
+        uses: snyk/actions/setup@v2
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+          
+      - name: Setup node
+        uses: actions/setup-node@v3.9.1
+        with:
+          node_version: 20
+
+      - name: Install dep
+        run: npm install
+
+      - name: Run Snyk test (fails on vulnerabilities)
+        run: snyk test --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Monitor project with snyk
+        run: snyk monitor --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
+          
