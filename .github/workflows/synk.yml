@@ -2,7 +2,7 @@ name: Snyk Continuous Security Scan
 
 on:
   workflow_dispatch:
-  # Optional: Enable for pushes & PRs
+  # Optional triggers:
   # push:
   #   branches: [main]
   # pull_request:
@@ -10,7 +10,6 @@ on:
 jobs:
   snyk_security:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: read
@@ -27,20 +26,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Snyk CLI
-        uses: snyk/actions/setup@v2
-        with:
-          snyk-version: '1.391.0'  # ✅ No 'v' prefix
-
-      - name: Authenticate with Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
-
-      - name: Run Snyk test (fail build on vulns)
-        run: snyk test --all-projects
+      - name: Run Snyk test
+        uses: snyk/actions/node@latest
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects
 
       - name: Monitor with Snyk
-        run: snyk monitor --all-projects
+        uses: snyk/actions/node@latest
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
