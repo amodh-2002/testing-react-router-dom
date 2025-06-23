@@ -13,12 +13,17 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3.9.1
         with:
-          node_version: 20
+          node-version: 20
 
       - name: Installing dependencies
         run: npm install
 
       - name: Set up SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v5.0.0
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=amodh-2002_testing-react-router-dom
+            -Dsonar.organization=amodh-2002
+            -Dsonar.projectName=testing-react-router-dom
