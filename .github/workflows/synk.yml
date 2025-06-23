@@ -27,14 +27,14 @@ jobs:
         run: npm install
 
       - name: Run Snyk test
-        uses: snyk/actions/node@latest
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --all-projects
 
       - name: Monitor with Snyk
-        uses: snyk/actions/node@latest
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
