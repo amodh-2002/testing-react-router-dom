@@ -1,0 +1,13 @@
+name: Test ARC Runners
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: arc-runner-set  # Must match INSTALLATION_NAME
+    steps:
+      - name: Check runner
+        run: |
+          echo "Running on custom runner!"
+          echo "Runner name: $HOSTNAME"
+          uname -a
